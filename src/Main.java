@@ -11,8 +11,8 @@ public class Main {
 
         do {
             // Minta pengguna memasukkan angka pertama dan kedua
-            double angka1 = readNumber("Masukkan angka pertama: ", scanner);
-            double angka2 = readNumber("Masukkan angka kedua: ", scanner);
+            int angka1 = readNumber("Masukkan angka pertama: ", scanner);
+            int angka2 = readNumber("Masukkan angka kedua: ", scanner);
 
             // Validasi agar angka kedua tidak boleh nol jika operator adalah "/"
             while (angka2 == 0 && isValidOperator("/")) {
@@ -24,7 +24,7 @@ public class Main {
             String operator = readOperator(scanner);
 
             // Hitung hasil operasi berdasarkan angka dan operator yang diberikan
-            double hasil = calculateResult(angka1, angka2, operator);
+            int hasil = calculateResult(angka1, angka2, operator);
 
             // Tampilkan hasil perhitungan
             System.out.println("Hasil : " + hasil);
@@ -37,42 +37,43 @@ public class Main {
     }
 
     // Fungsi untuk perhitungan tambah
-    private static double plus (double angka1, double angka2) {
+    private static int plus(int angka1, int angka2) { // Ganti tipe data double menjadi int
         return angka1 + angka2;
     }
 
     // Fungsi untuk perhitungan kurang
-    private static double minus (double angka1, double angka2) {
+    private static int minus(int angka1, int angka2) { // Ganti tipe data double menjadi int
         return angka1 - angka2;
     }
 
     // Fungsi untuk perhitungan kali
-    private static double multiply (double angka1, double angka2) {
+    private static int multiply(int angka1, int angka2) { // Ganti tipe data double menjadi int
         return angka1 * angka2;
     }
 
     // Fungsi untuk perhitungan bagi
-    private static double divide (double angka1, double angka2) {
+    private static int divide(int angka1, int angka2) { // Ganti tipe data double menjadi int
         return angka1 / angka2;
     }
 
     // Fungsi untuk membaca angka dari input pengguna
-    private static double readNumber(String message, Scanner scanner) {
-        double angka;
+    private static int readNumber(String message, Scanner scanner) {
+        int angka;
 
         while (true) {
             try {
                 System.out.print(message);
-                angka = scanner.nextDouble();
+                angka = scanner.nextInt();
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Error: Masukkan angka yang valid.");
+                System.out.println("Maaf, input yang anda masukan tidak valid.");
                 scanner.nextLine();
             }
         }
 
         return angka;
     }
+
 
     // Fungsi untuk membaca operator matematika dari input pengguna
     private static String readOperator(Scanner scanner) {
@@ -95,8 +96,8 @@ public class Main {
     }
 
     // Fungsi untuk melakukan perhitungan berdasarkan angka dan operator yang diberikan
-    private static double calculateResult(double angka1, double angka2, String operator) {
-        double hasil = 0;
+    private static int calculateResult(int angka1, int angka2, String operator) { // Ganti tipe data double menjadi int
+        int hasil = 0;
 
         // Lakukan operasi matematika berdasarkan operator yang diberikan
         switch (operator) {
