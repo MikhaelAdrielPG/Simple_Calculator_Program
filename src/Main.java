@@ -3,103 +3,117 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Fungsi utama untuk menjalankan kalkulator
+        // Fungsi utama di main yang menjalankan kalkulator
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Kalkulator");
         System.out.println("==============================");
 
-        while (true) {
-            // Meminta pengguna memasukkan angka pertama dan kedua
-            double angka1;
-            double angka2;
+        do {
+            // Minta pengguna memasukkan angka pertama dan kedua
+            double angka1 = readNumber("Masukkan angka pertama: ", scanner);
+            double angka2 = readNumber("Masukkan angka kedua: ", scanner);
 
-            while (true) {
-                try {
-                    // Meminta pengguna memasukkan angka pertama
-                    System.out.print("Masukkan angka pertama: ");
-                    angka1 = scanner.nextDouble();
-                    break; // Berhenti dari loop jika input valid
-                } catch (InputMismatchException e) {
-                    // Tangani kesalahan jika pengguna memasukkan nilai non-numerik
-                    System.out.println("Maaf, input yang Anda masukkan tidak valid.");
-                    scanner.nextLine(); // Membersihkan buffer setelah input salah
-                }
+            // Validasi agar angka kedua tidak boleh nol jika operator adalah "/"
+            while (angka2 == 0 && isValidOperator("/")) {
+                System.out.println("Maaf, tidak dapat melakukan pembagian dengan nol.");
+                angka2 = readNumber("Masukkan angka kedua: ", scanner);
             }
 
-            while (true) {
-                try {
-                    // Meminta pengguna memasukkan angka kedua
-                    System.out.print("Masukkan angka kedua: ");
-                    angka2 = scanner.nextDouble();
+            // Minta pengguna memasukkan operator matematika
+            String operator = readOperator(scanner);
 
-                    // Validasi angka kedua tidak boleh nol (0) untuk operator division '/'
-                    if (angka2 == 0 && isValidOperator("/")) {
-                        System.out.print("Masukkan operator matematika (+, -, *, /): ");
-                        continue; // Mengulang loop meminta angka kedua
-                    }
+            // Hitung hasil operasi berdasarkan angka dan operator yang diberikan
+            double hasil = calculateResult(angka1, angka2, operator);
 
-                    break; // Berhenti dari loop jika input valid
-                } catch (InputMismatchException e) {
-                    // Tangani kesalahan jika pengguna memasukkan nilai non-numerik
-                    System.out.println("Maaf, input yang Anda masukkan tidak valid.");
-                    scanner.nextLine(); // Membersihkan buffer setelah input salah
-                }
-            }
+            // Tampilkan hasil perhitungan
+            System.out.printf("Hasil: %.0f%n", hasil);
 
-            String operator;
+            // Tanya pengguna apakah ingin melakukan perhitungan lagi atau keluar dari program
+        } while (askForAnotherCalculation(scanner));
 
-            // validasi operator
-            while (true) {
-                // Meminta pengguna memasukkan operator
-                System.out.print("Masukkan operator matematika (+, -, *, /): ");
-                operator = scanner.next();
-
-                // Periksa apakah operator yang dimasukkan valid
-                if (!isValidOperator(operator)) {
-                    System.out.print("Masukkan operator matematika (+, -, *, /): ");
-                } else {
-                    break;
-                }
-            }
-
-            double hasil = 0;
-
-            // Evaluasi operator yang dimasukkan oleh pengguna dan lakukan perhitungan
-            switch (operator) {
-                case "+":
-                    hasil = angka1 + angka2;
-                    break;
-                case "-":
-                    hasil = angka1 - angka2;
-                    break;
-                case "*":
-                    hasil = angka1 * angka2;
-                    break;
-                case "/":
-                    hasil = angka1 / angka2;
-                    break;
-                default:
-                    System.out.println("Invalid operator.");
-            }
-
-            // Menampilkan hasil dari perhitungan
-            System.out.println("Hasil: " + hasil);
-
-            // Tanya pengguna apakah ingin melakukan perhitungan lagi atau tidak
-            System.out.print("Apakah Anda ingin menghitung lagi? (ya/tidak): ");
-            String ulangi = scanner.next();
-
-            // Jika pengguna memasukkan "n", keluar dari loop dan selesaikan program
-            if (!ulangi.equals("y")) {
-                break;
-            }
-        }
-        scanner.close();  // Tutup scanner
+        // Tutup scanner setelah selesai digunakan
+        scanner.close();
     }
 
-    // Fungsi untuk memeriksa apakah operator yang dimasukkan valid
+    // Fungsi untuk perhitungan tambah
+    private static double plus (double angka1, double angka2) {
+        return angka1 + angka2;
+    }
+
+    // Fungsi untuk perhitungan kurang
+    private static double minus (double angka1, double angka2) {
+        return angka1 - angka2;
+    }
+
+    // Fungsi untuk perhitungan kali
+    private static double multiply (double angka1, double angka2) {
+        return angka1 * angka2;
+    }
+
+    // Fungsi untuk perhitungan bagi
+    private static double divide (double angka1, double angka2) {
+        return angka1 / angka2;
+    }
+
+    // Fungsi untuk membaca angka dari input pengguna
+    private static double readNumber(String message, Scanner scanner) {
+        double angka;
+
+        while (true) {
+            try {
+                System.out.print(message);
+                angka = scanner.nextDouble();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Masukkan angka yang valid.");
+                scanner.nextLine();
+            }
+        }
+
+        return angka;
+    }
+
+    // Fungsi untuk membaca operator matematika dari input pengguna
+    private static String readOperator(Scanner scanner) {
+        while (true) {
+            System.out.print("Masukkan operator matematika (+, -, *, /): ");
+            String operator = scanner.next();
+
+            // Validasi agar operator yang dimasukkan harus sesuai dengan (+, -, *, /)
+            if (!isValidOperator(operator)) {
+                System.out.println("Maaf, operator yang Anda masukkan tidak valid.");
+            } else {
+                return operator;
+            }
+        }
+    }
+
+    // Fungsi untuk memvalidasi operator yang dimasukkan harus sesuai dengan (+, -, *, /)
     private static boolean isValidOperator(String operator) {
         return operator.equals("+") || operator.equals("-") || operator.equals("*") || operator.equals("/");
+    }
+
+    // Fungsi untuk melakukan perhitungan berdasarkan angka dan operator yang diberikan
+    private static double calculateResult(double angka1, double angka2, String operator) {
+        double hasil = 0;
+
+        // Lakukan operasi matematika berdasarkan operator yang diberikan
+        switch (operator) {
+            case "+" -> hasil = plus(angka1, angka2);
+            case "-" -> hasil = minus(angka1, angka2);
+            case "*" -> hasil = multiply(angka1, angka2);
+            case "/" -> hasil = divide(angka1, angka2);
+            default -> System.out.println("Maaf, operator yang Anda masukkan tidak valid.");
+        }
+
+        return hasil;
+    }
+
+    // Fungsi untuk menanyakan apakah pengguna ingin melakukan perhitungan lagi
+    private static boolean askForAnotherCalculation(Scanner scanner) {
+        System.out.print("Apakah Anda ingin menghitung lagi? (ya/tidak): ");
+        String ulangi = scanner.next();
+        return ulangi.equalsIgnoreCase("ya");
     }
 }
