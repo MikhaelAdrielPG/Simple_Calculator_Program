@@ -27,7 +27,7 @@ public class Main {
             double hasil = calculateResult(angka1, angka2, operator);
 
             // Tampilkan hasil perhitungan
-            System.out.printf("Hasil: %.0f%n", hasil);
+            System.out.println("Hasil : " + hasil);
 
             // Tanya pengguna apakah ingin melakukan perhitungan lagi atau keluar dari program
         } while (askForAnotherCalculation(scanner));
